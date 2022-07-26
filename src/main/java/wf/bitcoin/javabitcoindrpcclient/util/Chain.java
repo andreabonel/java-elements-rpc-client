@@ -9,5 +9,6 @@ public enum Chain
 {
 	MAIN,
 	TEST,
-	REGTEST;
+	REGTEST,
+	ELEMENTSREGTEST;
 }
