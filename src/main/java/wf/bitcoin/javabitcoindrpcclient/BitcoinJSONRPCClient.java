@@ -440,14 +440,18 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     Map<String, Object> pOutputs = new LinkedHashMap<>();
 
     for (TxOutput txOutput : outputs) {
-      pOutputs.put(txOutput.address(), txOutput.amount());
+      if (txOutput.address() != null && txOutput.amount() != null) {
+        pOutputs.put(txOutput.address(), txOutput.amount());
+      }
       if (txOutput.data() != null) {
         String hex = HexCoder.encode(txOutput.data());
         pOutputs.put("data", hex);
       }
     }
 
-    return (String) query("createrawtransaction", pInputs, pOutputs);
+    List<Map<String, ?>> pOutputs2 = new ArrayList<>(); //to support bitcoin >=0.17
+    pOutputs2.add(pOutputs);
+    return (String) query("createrawtransaction", pInputs, pOutputs2);
   }
 
   public Map<String, ?> fundRawTransaction(String hexString) throws GenericRpcException {
