@@ -409,7 +409,6 @@ public interface BitcoindRpcClient {
    * decodepsbt "psbt"
    * decoderawtransaction "hexstring" ( iswitness )
    * finalizepsbt "psbt" ( extract )
-   * fundrawtransaction "hexstring" ( options iswitness )
    * signrawtransactionwithkey "hexstring" ["privatekey1",...] ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] sighashtype )
    * testmempoolaccept ["rawtxs"] ( allowhighfees )
    */
@@ -426,6 +425,11 @@ public interface BitcoindRpcClient {
    */
   String createRawTransaction(List<TxInput> inputs, List<TxOutput> outputs) throws GenericRpcException;
 
+  Map<String, ?> fundRawTransaction(String hexString) throws GenericRpcException;
+  Map<String, ?> fundRawTransaction(String hexString, MapWrapper options) throws GenericRpcException;
+  Map<String, ?> fundRawTransaction(String hexString, boolean options) throws GenericRpcException;
+  Map<String, ?> fundRawTransaction(String hexString, MapWrapper options, boolean isWitness) throws GenericRpcException;
+  Map<String, ?> fundRawTransaction(String hexString, boolean options, boolean isWitness) throws GenericRpcException;
   /**
    * The decodescript RPC decodes a hex-encoded P2SH redeem script.
    * 
@@ -563,8 +567,7 @@ public interface BitcoindRpcClient {
    * 
    * abandontransaction "txid"
    * abortrescan
-   * bumpfee "txid" ( options ) 
-   * createwallet "wallet_name" ( disable_private_keys )
+   * bumpfee "txid" ( options )
    * getaddressesbylabel "label"
    * getaddressinfo "address"
    * importmulti "requests" ( "options" )
@@ -578,7 +581,6 @@ public interface BitcoindRpcClient {
    * rescanblockchain ("start_height") ("stop_height")
    * sendmany "" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")
    * sethdseed ( "newkeypool" "seed" )
-   * signrawtransactionwithwallet "hexstring" ( [{"txid":"id","vout":n,"scriptPubKey":"hex","redeemScript":"hex"},...] sighashtype )
    * unloadwallet ( "wallet_name" )
    * walletcreatefundedpsbt [{"txid":"id","vout":n},...] [{"address":amount},{"data":"hex"},...] ( locktime ) ( replaceable ) ( options bip32derivs )
    * walletlock
@@ -610,6 +612,17 @@ public interface BitcoindRpcClient {
    */
   @Deprecated
   MultiSig addMultiSigAddress(int nRequired, List<String> keyObject, String account);
+
+  /**
+   * The createwallet RPC creates and loads a new wallet.
+   *
+   * @param wallet_name The name for the new wallet. If this is a path, the wallet will be created at the path location.
+   *
+   * @see <a href="https://bitcoin.org/en/developer-reference#createwallet">createwallet</a>
+   */
+  public Map<String, ?> createWallet(String walletName);
+  public Map<String, ?> createWallet(String walletName, boolean disablePrivateKeys);
+
 
   /**
    * The backupwallet RPC safely copies wallet.dat to the specified file, which can be a directory or a path with filename.
@@ -1259,6 +1272,10 @@ public interface BitcoindRpcClient {
   * @see <a href="https://bitcoin.org/en/developer-reference#signmessage">signmessage</a>
   */
  String signMessage(String adress, String message);
+
+  Map<String, ?> signRawTransactionWithWallet(String hexString);
+  Map<String, ?> signRawTransactionWithWallet(String hexString, List<Map<String, ?>> prevTxs);
+  Map<String, ?> signRawTransactionWithWallet(String hexString, List<Map<String, ?>> prevTxs, String sigHashType);
 
  /**
   * The walletpassphrase RPC stores the wallet decryption key in memory for the indicated number of seconds. 

@@ -450,6 +450,22 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     return (String) query("createrawtransaction", pInputs, pOutputs);
   }
 
+  public Map<String, ?> fundRawTransaction(String hexString) throws GenericRpcException {
+    return (Map<String, ?>) query("fundrawtransaction", hexString);
+  }
+  public Map<String, ?> fundRawTransaction(String hexString, MapWrapper options) throws GenericRpcException {
+    return (Map<String, ?>) query("fundrawtransaction", hexString, options);
+  }
+  public Map<String, ?> fundRawTransaction(String hexString, boolean options) throws GenericRpcException {
+    return (Map<String, ?>) query("fundrawtransaction", hexString, options);
+  }
+  public Map<String, ?> fundRawTransaction(String hexString, MapWrapper options, boolean isWitness) throws GenericRpcException {
+    return (Map<String, ?>) query("fundrawtransaction", hexString, options, isWitness);
+  }
+  public Map<String, ?> fundRawTransaction(String hexString, boolean options, boolean isWitness) throws GenericRpcException {
+    return (Map<String, ?>) query("fundrawtransaction", hexString, options, isWitness);
+  }
+
   @Override
   public String dumpPrivKey(String address) throws GenericRpcException {
     return (String) query("dumpprivkey", address);
@@ -1088,6 +1104,14 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @Override
+  public Map<String, ?> createWallet(String walletName) throws GenericRpcException {
+    return (Map<String, ?>) query("createwallet", walletName);
+  }
+  public Map<String, ?> createWallet (String walletName, boolean disablePrivateKeys) throws GenericRpcException {
+    return (Map<String, ?>) query("createwallet", walletName, disablePrivateKeys);
+  }
+
+  @Override
   public void backupWallet(String destination) throws GenericRpcException {
     query("backupwallet", destination);
   }
@@ -1095,6 +1119,16 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   @Override
   public String signMessage(String bitcoinAdress, String message) throws GenericRpcException {
     return (String) query("signmessage", bitcoinAdress, message);
+  }
+
+  public Map<String, ?> signRawTransactionWithWallet(String hexString) throws GenericRpcException {
+    return (Map<String, ?>) query("signrawtransactionwithwallet", hexString);
+  }
+  public Map<String, ?> signRawTransactionWithWallet(String hexString, List<Map<String, ?>> prevTxs) throws GenericRpcException {
+    return (Map<String, ?>) query("signrawtransactionwithwallet", hexString, prevTxs);
+  }
+  public Map<String, ?> signRawTransactionWithWallet(String hexString, List<Map<String, ?>> prevTxs, String sigHashType) throws GenericRpcException {
+    return (Map<String, ?>) query("signrawtransactionwithwallet", hexString, prevTxs, sigHashType);
   }
 
   @Override
