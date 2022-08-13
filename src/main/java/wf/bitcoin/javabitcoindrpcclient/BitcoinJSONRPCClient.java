@@ -70,7 +70,7 @@ import wf.bitcoin.krotjson.JSON;
  */
 public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
-  private static final Logger logger = Logger.getLogger(BitcoindRpcClient.class.getPackage().getName());
+  protected static final Logger logger = Logger.getLogger(BitcoindRpcClient.class.getPackage().getName());
 
   public static final URL DEFAULT_JSONRPC_URL;
   public static final URL DEFAULT_JSONRPC_TESTNET_URL;
@@ -268,7 +268,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }).collect(Collectors.toList())).getBytes(QUERY_CHARSET);
   }
 
-  private static byte[] loadStream(InputStream in, boolean close) throws IOException {
+  protected static byte[] loadStream(InputStream in, boolean close) throws IOException {
     ByteArrayOutputStream o = new ByteArrayOutputStream();
     byte[] buffer = new byte[1024];
     for (;;) {
@@ -329,7 +329,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
         }
     }
 
-  private Object getResponseObject(Object expectedID, Map response) {
+  protected Object getResponseObject(Object expectedID, Map response) {
     if (!expectedID.equals(response.get("id")))
       throw new BitcoinRPCException("Wrong response ID (expected: " + String.valueOf(expectedID) + ", response: " + response.get("id") + ")");
 
@@ -342,7 +342,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   /**
    * Set an authenticated connection with Bitcoin server
    */
-  private HttpURLConnection setConnection() {
+  protected HttpURLConnection setConnection() {
     HttpURLConnection conn;
     try {
       conn = (HttpURLConnection) noAuthURL.openConnection();
@@ -1263,9 +1263,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 	  }
 
   @SuppressWarnings("serial")
-  private class AddressBalanceWrapper extends MapWrapper implements AddressBalance, Serializable
+  protected class AddressBalanceWrapper extends MapWrapper implements AddressBalance, Serializable
   {
-    private AddressBalanceWrapper(Map<String, ?> r) {
+    protected AddressBalanceWrapper(Map<String, ?> r) {
       super(r);
     }
 
@@ -1279,7 +1279,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }
   }
 
-  private class AddressUtxoWrapper implements AddressUtxo {
+  protected class AddressUtxoWrapper implements AddressUtxo {
     private String address;
     private String txid;
     private int outputIndex;
@@ -1287,7 +1287,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     private long satoshis;
     private long height;
 
-    private AddressUtxoWrapper(Map<String, ?> result) {
+    protected AddressUtxoWrapper(Map<String, ?> result) {
       address = getOrDefault(result, "address", "").toString();
       txid = getOrDefault(result, "txid", "").toString();
       outputIndex = getOrDefault(result, "outputIndex", 0);
@@ -1327,9 +1327,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }
   }
 
-  private class AddressUtxoList extends ListMapWrapper<AddressUtxo> {
+  protected class AddressUtxoList extends ListMapWrapper<AddressUtxo> {
 
-    private AddressUtxoList(List<Map<String, ?>> list) {
+    protected AddressUtxoList(List<Map<String, ?>> list) {
           super((List<Map<String, ?>>)list);
       }
 
@@ -1340,9 +1340,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class AddressValidationResultWrapper extends MapWrapper implements AddressValidationResult {
+  protected class AddressValidationResultWrapper extends MapWrapper implements AddressValidationResult {
 
-    private AddressValidationResultWrapper(Map<String, ?> m) {
+    protected AddressValidationResultWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1383,9 +1383,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   };
 
   @SuppressWarnings("serial")
-  private class AddressWrapper extends MapWrapper implements Address, Serializable {
+  protected class AddressWrapper extends MapWrapper implements Address, Serializable {
 
-    private AddressWrapper(Map<String, ?> m) {
+    protected AddressWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1401,9 +1401,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class BlockChainInfoMapWrapper extends MapWrapper implements BlockChainInfo, Serializable {
+  protected class BlockChainInfoMapWrapper extends MapWrapper implements BlockChainInfo, Serializable {
 
-    private BlockChainInfoMapWrapper(Map<String, ?> m) {
+    protected BlockChainInfoMapWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1492,11 +1492,11 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 	}
   }
 
-	private class AddressInfoMapWrapper extends MapWrapper implements AddressInfo, Serializable
+	protected class AddressInfoMapWrapper extends MapWrapper implements AddressInfo, Serializable
 	{
 		private static final long serialVersionUID = 8801943420993238518L;
 
-		private AddressInfoMapWrapper(Map<String, ?> m)
+        protected AddressInfoMapWrapper(Map<String, ?> m)
 		{
 			super(m);
 		}
@@ -1660,7 +1660,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 		}
 	}
 
-	private class AddressInfoLabelList extends ListMapWrapper<AddressInfoLabel>
+	protected class AddressInfoLabelList extends ListMapWrapper<AddressInfoLabel>
 	{
 		private AddressInfoLabelList(List<Map<String, ?>> list)
 		{
@@ -1676,8 +1676,8 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
 
 
-  private abstract class BlockBaseMapWrapper extends MapWrapper {
-    private BlockBaseMapWrapper(Map<String, ?> m) {
+  protected abstract class BlockBaseMapWrapper extends MapWrapper {
+    protected BlockBaseMapWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1734,9 +1734,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }
   }
 
-  private class BlockWithTxInfoMapWrapper extends BlockBaseMapWrapper implements BlockWithTxInfo, Serializable {
+  protected class BlockWithTxInfoMapWrapper extends BlockBaseMapWrapper implements BlockWithTxInfo, Serializable {
 
-    private BlockWithTxInfoMapWrapper(Map<String, ?> m) {
+    protected BlockWithTxInfoMapWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1768,9 +1768,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class BlockMapWrapper extends BlockBaseMapWrapper implements Block, Serializable {
+  protected class BlockMapWrapper extends BlockBaseMapWrapper implements Block, Serializable {
 
-    private BlockMapWrapper(Map<String, ?> m) {
+    protected BlockMapWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1796,9 +1796,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
   }
   @SuppressWarnings("serial")
-  private class DecodedScriptImpl extends MapWrapper implements DecodedScript, Serializable {
+  protected class DecodedScriptImpl extends MapWrapper implements DecodedScript, Serializable {
 
-    private DecodedScriptImpl(Map<String, ?> m) {
+    protected DecodedScriptImpl(Map<String, ?> m) {
       super(m);
     }
 
@@ -1835,9 +1835,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class LockedUnspentWrapper extends MapWrapper implements LockedUnspent {
+  protected class LockedUnspentWrapper extends MapWrapper implements LockedUnspent {
 
-    private LockedUnspentWrapper(Map<String, ?> m) {
+    protected LockedUnspentWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1853,9 +1853,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class MiningInfoWrapper extends MapWrapper implements MiningInfo, Serializable {
+  protected class MiningInfoWrapper extends MapWrapper implements MiningInfo, Serializable {
 
-    private MiningInfoWrapper(Map<String, ?> m) {
+    protected MiningInfoWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1911,9 +1911,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class MultiSigWrapper extends MapWrapper implements MultiSig, Serializable {
+  protected class MultiSigWrapper extends MapWrapper implements MultiSig, Serializable {
 
-    private MultiSigWrapper(Map<String, ?> m) {
+    protected MultiSigWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -1929,9 +1929,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class NetTotalsImpl extends MapWrapper implements NetTotals, Serializable {
+  protected class NetTotalsImpl extends MapWrapper implements NetTotals, Serializable {
 
-    private NetTotalsImpl(Map<String, ?> m) {
+    protected NetTotalsImpl(Map<String, ?> m) {
       super(m);
     }
 
@@ -1950,7 +1950,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
       return mapLong("timemillis");
     }
 
-    private class uploadTargetImpl extends MapWrapper implements uploadTarget, Serializable {
+    protected class uploadTargetImpl extends MapWrapper implements uploadTarget, Serializable {
 
       public uploadTargetImpl(Map<String, ?> m) {
         super(m);
@@ -1995,9 +1995,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class NetworkInfoWrapper extends MapWrapper implements NetworkInfo, Serializable {
+  protected class NetworkInfoWrapper extends MapWrapper implements NetworkInfo, Serializable {
 
-    private NetworkInfoWrapper(Map<String, ?> m) {
+    protected NetworkInfoWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2066,9 +2066,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class NetworkWrapper extends MapWrapper implements Network, Serializable {
+  protected class NetworkWrapper extends MapWrapper implements Network, Serializable {
 
-    private NetworkWrapper(Map<String, ?> m) {
+    protected NetworkWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2099,9 +2099,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class NodeInfoWrapper extends MapWrapper implements NodeInfo, Serializable {
+  protected class NodeInfoWrapper extends MapWrapper implements NodeInfo, Serializable {
 
-    private NodeInfoWrapper(Map<String, ?> m) {
+    protected NodeInfoWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2129,9 +2129,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class PeerInfoWrapper extends MapWrapper implements PeerInfoResult, Serializable {
+  protected class PeerInfoWrapper extends MapWrapper implements PeerInfoResult, Serializable {
 
-    private PeerInfoWrapper(Map<String, ?> m) {
+    protected PeerInfoWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2233,9 +2233,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class RawTransactionImpl extends MapWrapper implements RawTransaction, Serializable {
+  protected class RawTransactionImpl extends MapWrapper implements RawTransaction, Serializable {
 
-    private RawTransactionImpl(Map<String, ?> tx) {
+    protected RawTransactionImpl(Map<String, ?> tx) {
       super(tx);
     }
 
@@ -2279,7 +2279,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
       return mapLong("vsize");
     }
 
-    private class InImpl extends MapWrapper implements In, Serializable {
+    protected class InImpl extends MapWrapper implements In, Serializable {
 
       private InImpl(Map<String, ?> m) {
         super(m);
@@ -2349,7 +2349,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
       };
     }
 
-    private class OutImpl extends MapWrapper implements Out, Serializable {
+    protected class OutImpl extends MapWrapper implements Out, Serializable {
 
       private OutImpl(Map<String, ?> m) {
         super(m);
@@ -2365,7 +2365,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
         return mapInt("n");
       }
 
-      private class ScriptPubKeyImpl extends MapWrapper implements ScriptPubKey, Serializable {
+      protected class ScriptPubKeyImpl extends MapWrapper implements ScriptPubKey, Serializable {
 
         public ScriptPubKeyImpl(Map<String, ?> m) {
           super(m);
@@ -2462,11 +2462,11 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }
   }
 
-  private class ReceivedAddressListWrapper extends AbstractList<ReceivedAddress> {
+  protected class ReceivedAddressListWrapper extends AbstractList<ReceivedAddress> {
 
     private final List<Map<String, ?>> wrappedList;
 
-    private ReceivedAddressListWrapper(List<Map<String, ?>> wrappedList) {
+    protected ReceivedAddressListWrapper(List<Map<String, ?>> wrappedList) {
       this.wrappedList = wrappedList;
     }
 
@@ -2483,9 +2483,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class ReceivedAddressWrapper extends MapWrapper implements ReceivedAddress {
+  protected class ReceivedAddressWrapper extends MapWrapper implements ReceivedAddress {
 
-    private ReceivedAddressWrapper(Map<String, ?> m) {
+    protected ReceivedAddressWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2511,9 +2511,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class SmartFeeResultMapWrapper extends MapWrapper implements SmartFeeResult, Serializable {
+  protected class SmartFeeResultMapWrapper extends MapWrapper implements SmartFeeResult, Serializable {
 
-    private SmartFeeResultMapWrapper(Map<String, ?> m) {
+    protected SmartFeeResultMapWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2534,9 +2534,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class TransactionWrapper extends MapWrapper implements Transaction, Serializable {
+  protected class TransactionWrapper extends MapWrapper implements Transaction, Serializable {
 
-    private TransactionWrapper(Map<String, ?> m) {
+    protected TransactionWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2634,9 +2634,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }
   }
 
-  private class TransactionListMapWrapper extends ListMapWrapper<Transaction> {
+  protected class TransactionListMapWrapper extends ListMapWrapper<Transaction> {
 
-    private TransactionListMapWrapper(List<Map<String, ?>> list) {
+    protected TransactionListMapWrapper(List<Map<String, ?>> list) {
       super(list);
     }
 
@@ -2647,13 +2647,13 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class TransactionsSinceBlockImpl implements TransactionsSinceBlock, Serializable {
+  protected class TransactionsSinceBlockImpl implements TransactionsSinceBlock, Serializable {
 
     private final List<Transaction> transactions;
     private final String lastBlock;
 
     @SuppressWarnings("unchecked")
-    private TransactionsSinceBlockImpl(Map<String, ?> r) {
+    protected TransactionsSinceBlockImpl(Map<String, ?> r) {
       this.transactions = new TransactionListMapWrapper((List<Map<String, ?>>) r.get("transactions"));
       this.lastBlock = (String) r.get("lastblock");
     }
@@ -2670,9 +2670,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class TxOutSetInfoWrapper extends MapWrapper implements TxOutSetInfo, Serializable {
+  protected class TxOutSetInfoWrapper extends MapWrapper implements TxOutSetInfo, Serializable {
 
-    private TxOutSetInfoWrapper(Map<String, ?> m) {
+    protected TxOutSetInfoWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2713,9 +2713,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class TxOutWrapper extends MapWrapper implements TxOut, Serializable {
+  protected class TxOutWrapper extends MapWrapper implements TxOut, Serializable {
 
-    private TxOutWrapper(Map<String, ?> m) {
+    protected TxOutWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2771,9 +2771,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
     }
   }
 
-  private class UnspentListWrapper extends ListMapWrapper<Unspent> {
+  protected class UnspentListWrapper extends ListMapWrapper<Unspent> {
 
-    private UnspentListWrapper(List<Map<String, ?>> list) {
+    protected UnspentListWrapper(List<Map<String, ?>> list) {
       super(list);
     }
 
@@ -2784,9 +2784,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class UnspentWrapper extends MapWrapper implements Unspent {
+  protected class UnspentWrapper extends MapWrapper implements Unspent {
 
-	private UnspentWrapper(Map<String, ?> m) {
+    protected UnspentWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2873,9 +2873,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @SuppressWarnings("serial")
-  private class WalletInfoWrapper extends MapWrapper implements WalletInfo, Serializable {
+  protected class WalletInfoWrapper extends MapWrapper implements WalletInfo, Serializable {
 
-    private WalletInfoWrapper(Map<String, ?> m) {
+    protected WalletInfoWrapper(Map<String, ?> m) {
       super(m);
     }
 
@@ -2936,9 +2936,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
 	@SuppressWarnings("serial")
-	private class SignedRawTransactionWrapper extends MapWrapper implements SignedRawTransaction, Serializable
+	protected class SignedRawTransactionWrapper extends MapWrapper implements SignedRawTransaction, Serializable
 	{
-		private SignedRawTransactionWrapper(Map<String, ?> m)
+      protected SignedRawTransactionWrapper(Map<String, ?> m)
 		{
 			super(m);
 		}
@@ -2968,7 +2968,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 		}
 	}
 
-	private class RawTransactionSigningOrVerificationErrorList
+	protected class RawTransactionSigningOrVerificationErrorList
 			extends ListMapWrapper<RawTransactionSigningOrVerificationError>
 	{
 
@@ -2985,7 +2985,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 	}
 
 	@SuppressWarnings("serial")
-	private class RawTransactionSigningOrVerificationErrorWrapper extends MapWrapper implements RawTransactionSigningOrVerificationError, Serializable
+	protected class RawTransactionSigningOrVerificationErrorWrapper extends MapWrapper implements RawTransactionSigningOrVerificationError, Serializable
 	{
 		private RawTransactionSigningOrVerificationErrorWrapper(Map<String, ?> m)
 		{
@@ -3023,7 +3023,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 		}
 	}
 
-	private class AddressInfoLabelWrapper extends MapWrapper implements AddressInfoLabel, Serializable
+	protected class AddressInfoLabelWrapper extends MapWrapper implements AddressInfoLabel, Serializable
 	{
 		private static final long serialVersionUID = 3290420293956206271L;
 
@@ -3045,7 +3045,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 		}
 	}
 
-	private class BatchParam {
+	protected class BatchParam {
       public final String id;
       public final Object[] params;
 
@@ -3057,9 +3057,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
 
 	@SuppressWarnings("serial")
-	private class UnspentTxOutputWrapper extends MapWrapper implements UnspentTxOutput, Serializable {
+	protected class UnspentTxOutputWrapper extends MapWrapper implements UnspentTxOutput, Serializable {
 
-	  private UnspentTxOutputWrapper(Map<String, ?> m) {
+      protected UnspentTxOutputWrapper(Map<String, ?> m) {
 	    super(m);
 	  }
 
@@ -3096,9 +3096,9 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 	}
 
 	@SuppressWarnings("serial")
-	private class UtxoSetWrapper extends MapWrapper implements UtxoSet, Serializable {
+	protected class UtxoSetWrapper extends MapWrapper implements UtxoSet, Serializable {
 
-	  private UtxoSetWrapper(Map<String, ?> m) {
+	  protected UtxoSetWrapper(Map<String, ?> m) {
 	    super(m);
 	  }
 
