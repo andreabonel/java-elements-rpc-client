@@ -214,12 +214,7 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
   public BitcoinJSONRPCClient(URL rpc) {
     this.rpcURL = rpc;
-    try {
-      noAuthURL = new URI(rpc.getProtocol(), null, rpc.getHost(), rpc.getPort(), rpc.getPath(), rpc.getQuery(), null).toURL();
-    } catch (MalformedURLException | URISyntaxException ex) {
-      throw new IllegalArgumentException(rpc.toString(), ex);
-    }
-    authStr = rpc.getUserInfo() == null ? null : String.valueOf(Base64Coder.encode(rpc.getUserInfo().getBytes(Charset.forName("ISO8859-1"))));
+    updateConnectionInfo(rpc);
   }
 
   public BitcoinJSONRPCClient(boolean testNet) {
@@ -228,6 +223,15 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
   public BitcoinJSONRPCClient() {
     this(DEFAULT_JSONRPC_TESTNET_URL);
+  }
+
+  protected void updateConnectionInfo(URL rpc) {
+    try {
+      noAuthURL = new URI(rpc.getProtocol(), null, rpc.getHost(), rpc.getPort(), rpc.getPath(), rpc.getQuery(), null).toURL();
+    } catch (MalformedURLException | URISyntaxException ex) {
+      throw new IllegalArgumentException(rpc.toString(), ex);
+    }
+    authStr = rpc.getUserInfo() == null ? null : String.valueOf(Base64Coder.encode(rpc.getUserInfo().getBytes(Charset.forName("ISO8859-1"))));
   }
 
   public HostnameVerifier getHostnameVerifier() {
