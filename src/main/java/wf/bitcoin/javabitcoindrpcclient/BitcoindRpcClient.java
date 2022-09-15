@@ -2163,6 +2163,8 @@ public interface BitcoindRpcClient {
     BigDecimal payTxFee();
 
     String hdMasterKeyId();
+
+    String hdSeedId();
   }
   
   /**

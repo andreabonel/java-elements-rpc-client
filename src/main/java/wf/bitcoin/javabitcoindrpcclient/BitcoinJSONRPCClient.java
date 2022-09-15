@@ -2926,7 +2926,12 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
 
     @Override
     public String hdMasterKeyId() {
-      return mapStr("hdmasterkeyid");
+      return mapStr("hdseedid");
+    }
+
+    @Override
+    public String hdSeedId() {
+      return mapStr("hdseedid");
     }
   }
 
