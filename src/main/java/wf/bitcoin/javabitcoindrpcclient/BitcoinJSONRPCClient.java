@@ -832,21 +832,25 @@ public class BitcoinJSONRPCClient implements BitcoindRpcClient {
   }
 
   @Override
+  @Deprecated
   public boolean move(String fromAccount, String toAddress, BigDecimal amount) throws GenericRpcException {
     return (boolean) query("move", fromAccount, toAddress, amount);
   }
 
   @Override
+  @Deprecated
   public boolean move(String fromAccount, String toAddress, BigDecimal amount, String comment) throws GenericRpcException {
     return (boolean) query("move", fromAccount, toAddress, amount, 0, comment);
   }
 
   @Override
+  @Deprecated
   public boolean move(String fromAccount, String toAddress, BigDecimal amount, int minConf) throws GenericRpcException {
     return (boolean) query("move", fromAccount, toAddress, amount, minConf);
   }
 
   @Override
+  @Deprecated
   public boolean move(String fromAccount, String toAddress, BigDecimal amount, int minConf, String comment) throws GenericRpcException {
     return (boolean) query("move", fromAccount, toAddress, amount, minConf, comment);
   }

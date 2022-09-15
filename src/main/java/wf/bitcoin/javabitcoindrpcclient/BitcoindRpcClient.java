@@ -1143,12 +1143,14 @@ public interface BitcoindRpcClient {
   * @see <a href="https://bitcoin.org/en/developer-reference#move">move</a>
   * @deprecated
   */
+ @Deprecated
  boolean move(String fromAccount, String toAccount, BigDecimal amount, int minConf) throws GenericRpcException;
 
  /**
   * @see <a href="https://bitcoin.org/en/developer-reference#move">move</a>
   * @deprecated
   */
+ @Deprecated
  boolean move(String fromAccount, String toAccount, BigDecimal amount, int minConf, String comment) throws GenericRpcException;
 
 
