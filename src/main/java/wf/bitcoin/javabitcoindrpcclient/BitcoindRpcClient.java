@@ -2250,20 +2250,20 @@ public interface BitcoindRpcClient {
   @SuppressWarnings("serial")
   public static class ScanObject implements Serializable {
 
-    private String descriptor;
+    private String desc;
     private Integer range;
 
     public ScanObject(String descriptor, Integer range) {
-      this.descriptor = descriptor;
+      this.desc = descriptor;
       this.range = range;
     }
 
     public String getDescriptor() {
-      return descriptor;
+      return desc;
     }
 
     public void setDescriptor(String descriptor) {
-      this.descriptor = descriptor;
+      this.desc = descriptor;
     }
 
     public Integer getRange() {
